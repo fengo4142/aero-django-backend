@@ -1,0 +1,66 @@
+-- taken from http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.PostgreSQL.CommonDBATasks.html#Appendix.PostgreSQL.CommonDBATasks.PostGIS
+create extension postgis;
+create extension fuzzystrmatch;
+create extension postgis_tiger_geocoder;
+create extension postgis_topology;
+
+alter schema tiger owner to aerosimple;
+alter schema tiger_data owner to aerosimple;
+alter schema topology owner to aerosimple;
+
+ALTER TABLE tiger.loader_platform OWNER TO aerosimple;
+ALTER TABLE tiger.loader_lookuptables OWNER TO aerosimple;
+ALTER TABLE tiger.zip_lookup OWNER TO aerosimple;
+ALTER TABLE tiger.tract OWNER TO aerosimple;
+ALTER TABLE tiger.zip_state OWNER TO aerosimple;
+ALTER TABLE tiger.zip_state_loc OWNER TO aerosimple;
+ALTER TABLE tiger.state_lookup OWNER TO aerosimple;
+ALTER TABLE tiger.cousub OWNER TO aerosimple;
+ALTER TABLE tiger.street_type_lookup OWNER TO aerosimple;
+ALTER TABLE tiger.edges OWNER TO aerosimple;
+ALTER TABLE tiger.place_lookup OWNER TO aerosimple;
+ALTER TABLE tiger.addrfeat OWNER TO aerosimple;
+ALTER TABLE tiger.county_lookup OWNER TO aerosimple;
+ALTER TABLE tiger.faces OWNER TO aerosimple;
+ALTER TABLE tiger.countysub_lookup OWNER TO aerosimple;
+ALTER TABLE tiger.featnames OWNER TO aerosimple;
+ALTER TABLE tiger.zip_lookup_all OWNER TO aerosimple;
+ALTER TABLE tiger.addr OWNER TO aerosimple;
+ALTER TABLE tiger.zip_lookup_base OWNER TO aerosimple;
+ALTER TABLE tiger.zcta5 OWNER TO aerosimple;
+ALTER TABLE tiger.loader_variables OWNER TO aerosimple;
+ALTER TABLE tiger.geocode_settings_default OWNER TO aerosimple;
+ALTER TABLE tiger.tabblock OWNER TO aerosimple;
+ALTER TABLE tiger.county OWNER TO aerosimple;
+ALTER TABLE tiger.bg OWNER TO aerosimple;
+ALTER TABLE tiger.direction_lookup OWNER TO aerosimple;
+ALTER TABLE tiger.pagc_gaz OWNER TO aerosimple;
+ALTER TABLE tiger.geocode_settings OWNER TO aerosimple;
+ALTER TABLE tiger.pagc_lex OWNER TO aerosimple;
+ALTER TABLE tiger.state OWNER TO aerosimple;
+ALTER TABLE tiger.pagc_rules OWNER TO aerosimple;
+ALTER TABLE tiger.secondary_unit_lookup OWNER TO aerosimple;
+ALTER TABLE topology.topology OWNER TO aerosimple;
+ALTER TABLE topology.layer OWNER TO aerosimple;
+ALTER TABLE tiger.place OWNER TO aerosimple;
+ALTER TABLE tiger.tract_gid_seq OWNER TO aerosimple;
+ALTER TABLE tiger.pagc_rules_id_seq OWNER TO aerosimple;
+ALTER TABLE tiger.addrfeat_gid_seq OWNER TO aerosimple;
+ALTER TABLE tiger.tabblock_gid_seq OWNER TO aerosimple;
+ALTER TABLE tiger.cousub_gid_seq OWNER TO aerosimple;
+ALTER TABLE tiger.county_gid_seq OWNER TO aerosimple;
+ALTER TABLE topology.topology_id_seq OWNER TO aerosimple;
+ALTER TABLE tiger.bg_gid_seq OWNER TO aerosimple;
+ALTER TABLE tiger.zcta5_gid_seq OWNER TO aerosimple;
+ALTER TABLE tiger.featnames_gid_seq OWNER TO aerosimple;
+ALTER TABLE tiger.pagc_gaz_id_seq OWNER TO aerosimple;
+ALTER TABLE tiger.place_gid_seq OWNER TO aerosimple;
+ALTER TABLE tiger.edges_gid_seq OWNER TO aerosimple;
+ALTER TABLE tiger.pagc_lex_id_seq OWNER TO aerosimple;
+ALTER TABLE tiger.faces_gid_seq OWNER TO aerosimple;
+ALTER TABLE tiger.state_gid_seq OWNER TO aerosimple;
+ALTER TABLE tiger.addr_gid_seq OWNER TO aerosimple;
+
+ALTER TABLE public.spatial_ref_sys OWNER TO aerosimple;
+
+-- GRANT SELECT, INSERT ON TABLE public.spatial_ref_sys TO public;

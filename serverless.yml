@@ -1,0 +1,149 @@
+service: aero-backend
+
+plugins:
+  - serverless-pseudo-parameters
+  - serverless-certificate-creator
+  - serverless-stack-output
+  # - ./serverless_plugins/serverless-aurora-plugin
+  - ./serverless_plugins/serverless-fargate-plugin
+
+package:
+  exclude:
+    - node_modules/**
+    - venv/**
+    - venv1/**
+    - nodejs-latest/**
+    - .*
+
+provider:
+  name: aws
+  runtime: python3.7
+  stage: ${opt:stage, 'dev'}
+  defaultRegion: 'us-east-1'
+  region: ${opt:region, 'us-east-1'}
+  # regionsd: ${opt:regionsd, 'app'}
+  appname: ${opt:appname, 'aero'}
+  backendid: ${opt:id, 'us'}
+  stackName: ${self:provider.appname}-backend-${self:provider.stage}-${self:provider.backendid}
+  mainStackName: ${self:provider.appname}-main-${self:provider.stage}
+  globalStackName: ${self:provider.appname}-global-${self:provider.stage}
+  regionStackName: ${self:provider.appname}-region-${self:provider.stage}
+  dbStackName: ${self:provider.appname}-backend-db-${self:provider.stage}-${self:provider.backendid}
+  installationStackName: ${self:provider.appname}-installation-${self:provider.stage}-${self:provider.backendid}
+  prefix: ${opt:prefix, '${self:provider.appname}_${self:provider.stage}_${self:provider.backendid}'}
+  s3prefix: ${self:provider.appname}-${self:provider.stage}-${self:provider.backendid}
+  environment:
+    REGION: ${self:provider.region}
+    PREFIX: ${self:provider.prefix}
+    LOG_LEVEL: ${opt:loglevel, 'info'}
+    AURORA_AUTOPAUSE: ${opt:autopause, 'false'}
+    AURORA_IDENTIFIER: ${self:provider.stackName}
+    AURORA_USERNAME: aerosimple
+    # AURORA_PASSWORD: ${env:DB_PASSWORD, 'Aerosimple'}
+    # AURORA_HOST: ${cf:${self:provider.dbStackName}.Endpoint}
+    AURORA_HOST: "db.${self:custom.uiDomain}"
+    SECRET_KEY: ${env:DJANGO_SECRET_KEY, '848b2b0a-aaef-4bb4-8c94-ce165293547f'}
+    BUILD_VERSION: ${file(build/version-${self:custom.stage}.yml):BuildVersion}
+    PROJECT_VERSION: ${file(package.json):version}
+
+custom:
+  customCertificate:
+    certificateName: "*.${self:custom.uiDomain}"
+    hostedZoneName: "${self:custom.uiDomain}."
+    region: ${self:custom.region}
+    writeCertInfoToFile: true
+    certInfoFileName: build/.cert-info-${self:custom.stage}-${self:provider.backendid}.yml
+  stage: ${self:provider.stage}
+  prefix: ${self:provider.prefix}
+  mainPrefix: ${self:provider.appname}_${self:provider.stage}
+  region: ${self:provider.region}
+  hostedZoneName: ${self:custom.domains.${self:custom.stage}}
+  aliasHostedZoneId: Z3AQBSTGFYJSTF    # us-east-1
+  aliasDNSName: s3-website-us-east-1.amazonaws.com
+  domains:
+    prod: aerosimple.com
+    staging: ${self:custom.stage}.aerosimple.com
+    demo: ${self:custom.stage}.aerosimple.com
+    dev: ${self:custom.stage}.aerosimple.com
+    test: ${self:custom.stage}.aerosimple.com
+  uiDomain: "${self:provider.backendid}.${self:custom.domains.${self:custom.stage}}"
+  staticUiDomain: "static.${self:custom.uiDomain}"
+  output:
+    handler: scripts/output.handler
+    file: build/stack.yml
+  fargate:
+    vpc:
+      # cidr: 10.0.0.0/16
+      # subnets:
+      # - 10.0.0.0/24
+      # - 10.0.1.0/24
+      vpcId: ${cf:${self:provider.regionStackName}.VPC}
+      subnetIds: 
+      - ${cf:${self:provider.regionStackName}.PublicSubnet1}
+      - ${cf:${self:provider.regionStackName}.PublicSubnet2}
+    services:
+    - name: ${self:provider.appname}-backend-${self:provider.backendid}
+      cpu: ${opt:vcpu, '512'}
+      memory: ${opt:mem, '1024'}
+      taskRoleArn: ${cf:${self:provider.installationStackName}.AppRoleArn}
+      port: 1443
+      desiredCount: 1
+      healthCheckUri: /live-probe/
+      healthCheckPort: 1443
+      healthCheckInterval: 60
+      image: "#{AWS::AccountId}.dkr.ecr.${self:provider.defaultRegion}.amazonaws.com/${self:provider.appname}/backend:${self:custom.stage}-${self:provider.environment.BUILD_VERSION}"
+      command:
+      - "/etc/init.d/nginx start && uwsgi --master --die-on-term /usr/uwsgi/uwsgi.ini"
+      entryPoint:
+      - sh
+      - -c
+      environment:
+        BUILD_VERSION: ${self:provider.environment.BUILD_VERSION}
+        PROJECT_VERSION: ${self:provider.environment.PROJECT_VERSION}
+        PROJECT_DATABASE_USERNAME: ${self:provider.environment.AURORA_USERNAME}
+        PROJECT_DATABASE_NAME: ${self:provider.environment.AURORA_USERNAME}
+        PROJECT_DATABASE_PASSWORD: ${env:DB_PASSWORD, 'Aerosimple'}
+        PROJECT_DATABASE_HOST: ${self:provider.environment.AURORA_HOST}
+        IS_SERVER: 'yes'
+        SECRET_KEY: ${self:provider.environment.SECRET_KEY}
+        AWS_REGION: ${self:custom.region}
+        STAGE: ${self:custom.stage}
+        BACKEND_ID: ${self:provider.backendid}
+        APP_PREFIX: ${self:provider.appname}_${self:custom.stage}_
+        MAIN_APP_PREFIX: ${self:provider.appname}_${opt:mainStage, '${self:custom.stage}'}_
+        BASE_DOMAIN: ${self:custom.domains.${self:custom.stage}}
+        COGNITO_USER_POOL_ID: ${cf.${self:provider.defaultRegion}:${self:provider.mainStackName}.UserPoolId}
+        JWT_ISSUER: ${cf.${self:provider.defaultRegion}:${self:provider.mainStackName}.UserPoolProviderURL}
+        HTTP_REQUEST_LOGGING: ${opt:requestLogging, 'INFO'}
+        AWS_STORAGE_BUCKET_NAME: ${cf:${self:provider.installationStackName}.StaticBucketName}
+        ATTACHMENTS_BUCKET_NAME: ${cf:${self:provider.installationStackName}.AttachmentsBucketName}
+        EMAIL_HOST: ''
+        EMAIL_HOST_USER: ''
+        EMAIL_HOST_PASSWORD: ''
+        FROM_EMAIL_ADDRESS: admin.${self:custom.stage}@aerosimple.com
+      protocols:
+      # - protocol: HTTP
+      - protocol: HTTPS
+        certificateArns:
+        - ${file(build/.cert-info-${self:custom.stage}-${self:provider.backendid}.yml):CertificateArn}
+
+# functions:
+#   django:
+#     handler: wsgi_handler.handler
+#     events:
+#       - http: ANY /
+#       - http:
+#           path: /{proxy+}
+#           method: ANY
+#           cors:
+#             origin: "https://${self:custom.uiDomain}"
+#             headers:
+#               - Content-Type
+#               - X-Amz-Date
+#               - Authorization
+#               - X-Api-Key
+#               - X-Amz-Security-Token
+#               - X-Amz-User-Agent
+#               - Access-Control-Allow-Headers
+#               - Access-Control-Allow-Origin
+#             allowCredentials: true

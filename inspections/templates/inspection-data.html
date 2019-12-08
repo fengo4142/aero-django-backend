@@ -1,0 +1,182 @@
+<!doctype html>
+<html>
+<head>
+  <title>List of persons</title>
+  <style type="text/css">
+    table,
+    th,
+    td {
+      border: 1px solid black;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    .set {
+      border: none;
+      margin: 0 auto;
+    }
+    .set img {
+      max-width: 100px !important;
+    }
+    .setup {
+      border-left: none;
+      font-size: 15px;
+    }
+    th {
+      font-size: 9px;
+    }
+    td {
+      font-size: 9px;
+    }
+    th,
+    td {
+      width: 100px;
+      border: 1px solid black;
+      padding: 5px
+    }
+    .tech {
+      margin-bottom: 10px;
+    }
+    .flow {
+      width: 100%;
+      border-left: none;
+      border-right: none;
+    }
+    .borderexample {
+      padding: 10px 0px 0px 4px;
+      margin: -5.3px 8px 10px -5px;
+    }
+    .top {
+      border-top: none !important;
+      
+    }
+    .bold{
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <table class="tech">
+    <tr>
+      <td colspan="2" class="set"> <img src="{{ airport.logo.url }}" /></td>
+      <td colspan="3" class="setup">{{ airport.name }}</td>
+    </tr>
+    <tr>
+      <td class="bold">Date of Inspection</td>
+      <td>{{inspection_date}}</td>
+      <td class="bold">Inspected By:</td>
+      <td colspan="2">{{inspected}}</td>
+    </tr>
+    <tr style="margin-top: 15px;">
+      <td class="bold">Weather Conditions:</td>
+      <td>{{weather_conditions.title}}</td>
+      <td class="bold">Issues</td>
+      <td colspan="2">{{issues}}</td>
+    </tr>
+    <tr>
+      <td colspan="5"></td>
+    </tr>
+    <tr>
+      <td class="bold">Inspection Type</td>
+      <td colspan="4">{{inspection_type}}</td>
+    </tr>
+    <tr>
+      <td colspan="5"></td>
+    </tr>
+    <tr>
+      <th>INSPECTION ITEM</th>
+      <th>STATUS</th>    
+      {% if self_inspection.title == titles %}
+      <th>WORK ORDER</th>
+      {% endif %}
+      {% if self_inspection.title == titles %}
+          <th>REMARkS</th>
+      {% else %}   
+          <th colspan="3" style="text-align:center" >REMARKS</th>
+      {% endif %}
+      {% if self_inspection.title == titles %}
+      <th>NOTAM</th>
+      {% endif %}
+    </tr>
+    {% for field in fields %}
+      {% if field.type in "inspection"  %}
+        <tr>
+          <td colspan="5" style="background-color:grey; color: white;">{{field.title}}</td>
+        </tr>
+      {% endif %}
+      {% for checklist in field.checklist %}
+      <tr>
+        <td>{{checklist.value}}</td>
+        {% for key,value in insp_answer.items %}
+          {% for key2,value2 in value.items %}
+            {% if key2 == checklist.key %}
+              {% if key == field.id %}
+                {% if value2 %}
+                  <td>{{field.status_options.pass}}</td>
+                {% else %}
+                  <td>{{field.status_options.fail}}</td>
+                {% endif %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+       
+        {% if self_inspection.title == titles %}
+        <td class="top">
+        {% if self_inspection.title == titles %}
+          {% for work_order in work_orders %}           
+           {% if work_order.category == field.title %}
+            {% if work_order.subcategory ==  checklist.value %}
+               <p>{{work_order.id}} - {{ work_order.problem_description }}</p>
+             {% endif %}
+            {% endif %}           
+          {% endfor %}
+         {% endif %}
+        </td>
+        {% else %}
+         <td style= "display:none;"></td>
+        {% endif %}
+
+        {% if self_inspection.title == titles %}
+        <td class="top">
+          {% for remark in remarks %}
+            {% if remark.item_reference == checklist.key %}
+              {% if remark.field_reference == field.id %}
+                <p class="borderexample"> {{ remark.text }} </p>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </td>
+        {% else %}
+        <td colspan="3" class="top">
+          {% for remark in remarks %}
+            {% if remark.item_reference == checklist.key %}
+              {% if remark.field_reference == field.id %}
+                <p class="borderexample"> {{ remark.text }} </p>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </td>
+        {% endif %}
+        {% if self_inspection.title == titles %}
+        <td class="top">
+          {% if self_inspection.title == titles %}
+            {% for work_order in work_orders %}
+              {% if work_order.category == field.title %}
+                {% if work_order.subcategory ==  checklist.value %} 
+                    {% for notams in work_order.notams %}
+                    <p class="borderexample">({{ work_order.id }}) - {{ notams }}</p>
+                  {% endfor %}
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        </td>
+        {% else %}
+         <td style= "display:none;"></td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    {% endfor %}
+  </table>
+</body>
+</html>

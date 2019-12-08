@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Django HTMLtoPDF Tutorial</title>
+    <style type="text/css">
+    @page {
+            size: A4;
+            margin: 1cm;
+        }
+        table,th,td  { border: 1px solid black; border-collapse: collapse; }
+        .teach td:nth-child(2),
+        .teach td:nth-child(4) { width: 20%;}
+        .teach td:nth-child(3) { width: 25%;}
+        .teach td:nth-child(1) { width: 35%;}
+        th { font-size: 11px; }
+        td {font-size: 10px; }
+        .search { width:100%; margin-bottom: 10px;}
+        .set { border-left: none; }
+        .setup { border-right: none; font-size:15px;}
+    </style>
+</head>
+<body>
+        
+    <table class="search">
+        <!--
+            Airport Information
+        -->
+        {% for airport in airport %}
+        <tr> 
+            <td colspan="2" class="setup">{{ airport.name }}</td>
+            <td colspan="2" class="set"> <img src="{{ airport.logo.url }}"/></td>
+         {% endfor %}   
+        </tr>
+
+        <!--
+            Inspection Information
+        -->
+        <tr>
+            <td >Date of Inspection:</td>
+            <td colspan="3"></td>
+        </tr>
+        <tr>
+            <td>Inspectiontime:</td>
+            <td colspan="3"></td>
+        </tr>
+        <tr>
+            <td>Date</td>
+            <td colspan="3"></td>
+        </tr>
+    </table>
+        <!--
+            Inspection Items
+        -->
+    <table class="search">  
+        <tr>
+            <th>INSPECTION ITEM</th>
+            <th>STATUS </th>
+            <th>WORK ORDER </th>
+            <th>NOTAM </th>
+        </tr>        
+        <tr>
+            <th colspan="4" style="background-color:grey;">InspectionParent</th>
+        </tr>
+       
+            <tr>
+                {% for page in pages %}
+                    <tr >
+                        <td>{{page.section}}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+                
+                
+        
+            </tr>
+            {% for field in fields %}
+            <tr >
+                <td>{{field.title}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+            </tr>
+           {% for checklist in field.checklist %}
+            <tr>
+                    <td>{{checklist.value}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+            </tr>
+           {% endfor %}
+          {% endfor %}
+
+        {% for section in sections %}
+            <tr >
+                <td>{{section.title}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+            </tr>
+            
+        {% endfor %}
+        <tr>
+            <td>{{check}}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    
+        
+    </table>
+    
+</body>
+</html>

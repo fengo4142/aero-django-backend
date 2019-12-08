@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+<head>
+  <title>Inspection Template</title>
+  <style type="text/css">
+    table,
+    th,
+    td {
+      border: 1px solid black;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    .set {
+      border: none;
+      margin: 0 auto;
+    }
+    .set img {
+      max-width: 200px !important;
+    }
+    .setup {
+      border: none;
+      font-size: 15px;
+    }
+    th {
+      font-size: 9px;
+    }
+    td {
+      font-size: 9px;
+    }
+    th,
+    td {
+      width: 100px;
+      border: 1px solid black;
+      padding: 5px
+    }
+    .tech {
+      margin-bottom: 10px;
+      width: 100%;
+    }
+    .flow {
+      width: 100%;
+      border-left: none;
+      border-right: none;
+    }
+    .background {
+      background-color: grey;
+      color: white;
+    }
+    .bold {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <table class="tech">
+    <tr>
+      <td colspan="2" class="set"> <img src="{{ airport.logo.url }}" class="image" /></td>
+      <td colspan="3" class="setup">{{ airport.name }}</td>
+    </tr>
+    <tr>
+      <td class="bold">Date of Inspection</td>
+      <td></td>
+      <td class="bold">Inspected By</td>
+      <td colspan="2"></td>
+    </tr>
+    <tr style="margin-top: 15px;">
+      <td class="bold">Weather Conditions:</td>
+      <td></td>
+      <td class="bold">Issues</td>
+      <td colspan="2"></td>
+    </tr>
+    <tr>
+      <td colspan="5"></td>
+    </tr>
+    <tr>
+      <td class="bold">Inspection Type</td>
+      <td colspan="4"></td>
+    </tr>
+    <tr>
+      <td colspan="5"></td>
+    </tr>
+    <tr>
+      <th>INSPECTION ITEM</th>
+      <th>STATUS</th>
+      <th>WORK ORDER</th>
+      <th>REMARKS</th>
+      <th>NOTAM</th>
+    </tr>
+    <tr>
+      <td class="background" colspan="5">FIXTURE OUTAGES</td>
+    </tr>
+    {% for field in fields %}
+      {% if field.type in "inspection"  %}
+        <tr>
+          <td colspan="5" class="background">{{field.title}}</td>
+        </tr>
+      {% endif %}
+      {% for checklist in field.checklist %}
+        <tr>
+          <td>{{checklist.value}}</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      {% endfor %}
+    {% endfor %}
+  </table>
+</body>
+
+</html>

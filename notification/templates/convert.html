@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style type="text/css">
+    table, th, td { border:1px solid black;border-collapse: collapse;}
+      
+    </style>
+</head>
+<body>
+    <h1>{{title}}</h1>
+    <table width:100%;>
+        <tr>
+            <th>sections</th>
+            <th>Status</th>
+            <th>Work Order</th>
+        </tr>
+        {% for page in pages %}
+            <tr >
+                <td>{{page.title}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+        {% endfor %}
+
+        {% for field in fields %}
+            <tr >
+                <td>{{field.title}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% for checklist in field.checklist %}
+            <tr>
+                    <td>{{checklist.value}}</td>
+                    <td></td>
+                    <td></td>
+            </tr>
+           {% endfor %}
+        {% endfor %}
+
+        {% for section in sections %}
+            <tr >
+                <td>{{section.title}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            
+        {% endfor %}
+    </table>
+</body>

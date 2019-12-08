@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="css/bootstrap.min.css">
+      <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+      <style type="text/css">
+         table {
+         border-collapse: collapse;
+         border-spacing: 0;
+         max-width: 600px;
+         margin: auto;
+         top: 0;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         }
+         td{
+         padding:5px;
+         color:#242E42;font-family: 'Lato', sans-serif; font-size: 15px;
+         }
+        
+         h1{
+         color: #3A61A8; font-family:'Lato', sans-serif; line-height:80px;
+         }
+         @media screen and (min-width: 601px) {
+         h1{
+         font-size: 40px;
+           }
+         }
+         @media screen and (max-width: 600px) {
+         h1 {
+         font-size: 25px;
+           }
+         }
+         h2, h3{
+         color:#242E42;font-family: 'Lato', sans-serif;
+         }
+         h2{
+         font-size: 24px; 
+         }
+         h3{
+         font-size: 22px; 
+         border-top:1px solid #ccc;
+         width:95%;
+         padding-top:25px;
+         line-height:10px;
+         }
+      </style>
+   </head>
+   <body>
+         <div class="jumbotron text-center">
+               <table>
+                   <tr>
+                     <td colspan="2"  style="background-image: url({{images.rectangle}}); width: 620px; height:150px;  text-align: center; left:0px; right:0px; top:0px; bottom:0px; margin:auto; clear: both;">
+                          <img src={{images.logo}} style="max-width:100px; max-height:100px;  position:relative; bottom:96px; left:54px;">  
+                          <img src={{images.welcome}} style="max-width: 120px; max-height: 120px;position: relative; top: 78px; right: 48px; ">          
+                     </td>
+                  </tr>
+                  <tr>
+                     <td colspan="2" align="center">
+                        <h1>Work Order - Completed</h1>
+                        <h2>Pending operations Inspection</h2>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td colspan="2" align="center">
+                        <h2 style="margin: 0px 0px 5px 0px;">Requester Details</h2>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td align="right">Logged by   &nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp; </td>
+                     <td> {{work_order.logged_by.fullname}}</td>
+                  </tr>
+                  <tr>
+                     <td align="right">Logged on   &nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp; </td>
+                     <td> {{work_order.report_date}}</td>
+                  </tr>
+                  
+                  
+                  <tr>
+                     <td colspan="2" align="center" >
+                        <h3>Work order details</h3>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td align="right">Category &nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp; </td>
+                     <td> {{work_order.category}}</td>
+                  </tr>
+                  <tr>
+                     <td align="right">Subcategory &nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp; </td>
+                     <td> {{work_order.subcategory}}</td>
+                  </tr>
+                  <tr>
+                     <td align="right">Priority &nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp; </td>
+                     <td>
+                              {% if work_order.priority == 0 %}
+                              Low      
+                              {% elif work_order.priority == 1 %}
+                              Medium 
+                              {% else %}
+                              High 
+                              {% endif %}
+                      </td>
+                  </tr>
+                  <tr>
+                     <td align="right">Description  &nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp; </td>
+                     <td> {{work_order.problem_description}}</td>
+                  </tr>
+                  <tr>
+                        <td align="right">Attachments  &nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp; </td>
+                        <td>{% for workorderimage in workorderimage %}
+                        {% if workorderimage.id == work_order.id %}
+                        <img style="max-width:100px; max-height:100px;padding: 0px 0px 0px 0px; vertical-align: -moz-middle-with-baseline;" src="{{workorderimage.image.url}}"> 
+                        {% endif %}
+                        {% endfor %}
+                        </td>
+                  </tr>
+                  
+                  
+                  <tr>
+                     <td colspan="2" align="center" >
+                        <h3>Maintainance Reviews </h3>
+                     </td>
+                  </tr>
+      
+                   
+      
+                  <tr>
+                     <td align="right">Date & Time Complete &nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp; </td>
+                     <td style=" vertical-align: -moz-middle-with-baseline;">{{maintenance.completed_on}}</td>
+                  </tr>
+                  <tr> 
+                     <td align="right">Maintenance Comments  &nbsp;&nbsp;&nbsp; &nbsp; :   &nbsp;&nbsp;&nbsp;&nbsp; </td>
+                     <td style=" vertical-align: -moz-middle-with-baseline;">{{maintenance.work_description}}</td>
+                  </tr>
+                  <tr>
+                     <td  height="20"></td>
+                  </tr>
+                  <tr>
+                        <td colspan="2" align="center" ><a href='http://localhost:3000/ops/workorders/{{work_order.id}}/detail'"   style=" height:33px; width:250px;background-color:#3A61A8;border-radius:20px 20px;padding: 10px;color:#FFFFFF; border:none; text-decoration: none; margin-top:100px">Inspect Workorder</a></td>
+                  </tr> 
+                  
+               </table>
+            </div>
+            
+   </body>
+</html>

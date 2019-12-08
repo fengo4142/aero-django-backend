@@ -1,0 +1,63 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-01-15 15:11+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: forms/utils.py:9
+msgid "Draft"
+msgstr "Borrador"
+
+#: forms/utils.py:10
+msgid "Published"
+msgstr "Publicado"
+
+#: forms/utils.py:11
+msgid "Expired"
+msgstr "Expirado"
+
+#: inspections/models.py:49
+msgid "In progress"
+msgstr "En progreso"
+
+#: inspections/models.py:50 work_orders/models.py:71
+msgid "Completed"
+msgstr "Completa"
+
+#: work_orders/models.py:55
+msgid "High"
+msgstr "Alta"
+
+#: work_orders/models.py:56
+msgid "Medium"
+msgstr "Media"
+
+#: work_orders/models.py:57
+msgid "Low"
+msgstr "Baja"
+
+#: work_orders/models.py:68
+msgid "New"
+msgstr "Nueva"
+
+#: work_orders/models.py:69
+msgid "Pending Maintenance Review"
+msgstr "Esperando Revisión de Mantenimiento"
+
+#: work_orders/models.py:70
+msgid "Pending Operations Review"
+msgstr "Esperando Revisión de Operaciones"

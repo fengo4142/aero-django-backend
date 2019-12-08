@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+  <head>
+    <title>List of persons</title>
+    <style type="text/css">
+        table,th,td {border: 1px solid black;border-collapse: collapse; width: 100%;}
+      .set {border: none; margin:0 auto;}
+      .set img{ max-width:100px !important;}
+      .setup {border-right: none;font-size: 15px;}
+      th {font-size: 9px;}
+      td {font-size: 9px;}
+      th,td {width: 150px;border: 1px solid black;padding: 5px}
+      .tech {margin-bottom: 10px;}
+      .flow {width: 100%;border-left: none;border-right: none;}
+      .borderexample {  padding:0px 0px 0px 4px; margin: -5.3px 8px 10px -5px; }  
+      .top  { border-top: none !important;} 
+
+
+    </style>
+  </head>
+  <body>
+    <table class="tech">
+        <tr> 
+            <td colspan="2" class="setup" >{{ airport.name }}</td>
+            <td colspan="2" class="set"> <img src="{{ airport.logo.url }}" /></td>
+        </tr>
+      <tr>
+        <td>Date of Inspection</td>
+        <td></td>
+        <td>Inspected By:</td>
+        <td></td>
+      </tr>
+      <tr style = "margin-top: 15px;">
+        <td>Weather Conditions:</td>
+        <td></td>
+        <td>shift</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td colspan="4"></td>
+      </tr>
+      <tr>
+        <td>Inspected-type</td>
+        <td colspan="3"></td>
+      </tr>
+      <tr>
+          <td colspan="4"></td>
+        </tr>
+      <tr>
+        <th>INSPECTION ITEM</th>
+        <th>STATUS</th>
+        <th>WORK ORDER # - REMARKS</th>
+        <th>NOTAM</th>
+      </tr>
+        {% for field in fields %} 
+          {% if field.type in "inspection"  %}
+            <tr>
+              <td colspan="4" style="background-color:grey;">{{field.title}}</td>
+            </tr>
+          {% endif %}
+
+          {% for checklist in field.checklist %}
+          <tr>
+            <td >{{checklist.value}}</td>
+            {% for key,value in insp_answer.items %}
+            {% for key2,value2 in value.items %}
+              {% if key2 == checklist.key %}
+                {% if key == field.id %}
+                  {% if value2 %}
+                    <td>{{field.status_options.pass}}</td>
+                  {% else %}
+                  <td>{{field.status_options.fail}}</td>
+                  {% endif %}
+                 {% endif %}
+              {% endif %}  
+            {% endfor %}
+           {% endfor %}
+
+          
+              <td class="top">
+                  {% for work_orders in work_orders %}
+                  {% if work_orders.subcategory ==  checklist.value %}
+                  
+                    <p class="borderexample"> {{ work_orders.id }}  -  {{ work_orders.problem_description }}
+                    </p>
+                  
+                  {% endif %}
+                {% endfor %}
+    
+              </td>     
+              
+            <td></td>  
+          </tr>                          
+            {% endfor %}          
+        {% endfor %}
+        
+        
+
+    </table>
+  </body>
+  </html>
+  

@@ -1,0 +1,36 @@
+FROM python:3.7
+
+LABEL maintainer "prakash@unosimple.com"
+VOLUME ["/usr/media", "/usr/static"]
+
+WORKDIR /usr/app
+ENV LANG C.UTF-8
+ENV LANGUAGE C.UTF-8
+ENV LC_ALL C.UTF-8
+
+EXPOSE 3031 9090
+RUN mkdir /usr/uwsgi
+
+RUN pip3 install --upgrade pip && pip3 install "uWSGI"
+
+COPY uwsgi_light.ini /usr/uwsgi/uwsgi.ini
+
+RUN apt-get update && apt-get install -y \
+    gdal-bin gettext
+
+COPY requirements.txt /usr/app/
+RUN pip3 install -r /usr/app/requirements.txt
+
+# Be aware of trailing slashes
+COPY ./ /usr/app
+RUN cp backend/wsgi_docker.py wsgi_docker.py
+RUN rm -rf /usr/app/.serverless
+RUN rm -rf /usr/app/venv
+
+RUN apt-get install -y nginx
+RUN sed -i "s/worker_processes  1/worker_processes auto/" /etc/nginx/nginx.conf && rm -f /etc/nginx/conf.d/default.conf
+COPY nginx/*.conf /etc/nginx/conf.availables/
+RUN ln -s /etc/nginx/conf.availables/aws-elb.conf /etc/nginx/conf.d/aws-elb.conf
+
+# CMD ["uwsgi","--master", "--die-on-term", "/usr/uwsgi/uwsgi.ini"]
+CMD /etc/init.d/nginx start && uwsgi --master --die-on-term /usr/uwsgi/uwsgi.ini

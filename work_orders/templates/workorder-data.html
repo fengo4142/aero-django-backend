@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+td {
+  border: 1px solid black;
+}
+table,tr {
+  border-spacing: 15px 30px;
+}
+.column{
+	width:100%;
+}
+.column-left{
+  border-right: 1px solid black;
+   padding-top:20px;
+  padding-bottom:20px;
+ 
+  float:left;
+  width:49%;
+  text-align:center;
+}
+.column-right{
+  padding:15px 0px 0px 0px;
+  float:left;
+  width:49%; 
+  text-align:center;
+}
+
+
+</style>
+</head>
+<body>
+
+
+
+<table style="width:100%">
+  <tr>
+    <td style="border-style: none;">
+                <div>
+                  <div style="width:49%;"><img style="max-width:100px;float:left; " src="{{ airport.logo.url }}" /></div>
+                  <div style="float:left; padding:40px 0px 0px 0px; font-weight: bold; width:49%;">WORK ORDER FORM</div>
+                 </div> 
+    </td>
+    <td style="border-style:none;">
+        <div class="column">
+         <div class="column-left" style="border: 1px solid black; float:left;">
+            Work order#
+           </div>
+           <div class="column-right" style="border:1px solid black;float:left; padding-bottom:25px">
+           {{workid}}
+           </div>
+        </div>
+        </td>
+   </tr>
+    <tr>
+    <td>
+      <div class="column">
+    	<div class="column-left">Date and Time Reported</div>
+        <div class="column-right">{{date1}}</div>
+       </div>
+    </td>
+    <td>
+        <div class="column">
+            <div style="padding-top:30px; padding-bottom:30px;  border-right: 1px solid black;float:left;width:49%;text-align:center;">Logged By</div>
+            <div style="float:left;width:49%;text-align:center;padding:20px 0px 0px 0px">{{logby}}</div>
+        </div>
+    </td>
+    </tr>
+    <tr>
+            <td>
+              <div class="column">
+                <div class="column-left">Category</div>
+                <div class="column-right">{{cat}}</div>
+               </div> 
+            </td>
+            <td>
+                <div class="column">
+                    <div class="column-left">Assigned To</div>
+                    <div class="column-right"></div>
+                </div>
+            </td>
+    </tr>
+    <tr>
+            <td colspan="2" style="width:90%;" >Problem Description<hr>{{desc1}}</td>
+            
+    </tr>
+    <tr>
+            <td colspan="2" style="width:98%;">Primary location of the problem<hr>{{location}}</td>
+        </tr>
+    <tr>
+            <td>
+              <div class="column">
+                <div class="column-left">Logged By</div>
+                <div class="column-right">{{logby}}</div>
+               </div> 
+            </td>
+            <td>
+              <div class="column">
+                <div class="column-left">Date Logged</div>
+                <div class="column-right">{{date1}}</div>
+              </div>
+            </td>
+    </tr>
+    <tr>
+            <td>
+              <div class="column">
+                <div class="column-left">Completed by</div>
+                <div class="column-right">{{maincompby}}</div>
+               </div> 
+            </td>
+            <td>
+              <div class="column">
+                <div class="column-left">Date Completed</div>
+                <div class="column-right">{{date2}}</div>
+              </div>
+           </td>
+    </tr>
+    <tr>
+            <td>
+              <div class="column">
+                <div class="column-left">Inspected by</div>
+                <div class="column-right">{{opcompby}}</div>
+               </div> 
+            </td>
+            <td>
+              <div class="column">
+                <div class="column-left">Date Inspected</div>
+                <div class="column-right">{{date3}}</div>
+              </div>
+            </td>
+    </tr>
+    <tr>
+            <td style="border-style: none;">
+              <div>
+                <div ></div>
+                <div ></div>
+               </div> 
+            </td>
+            <td>
+                <div class="column">
+                    <div class="column-left">Duration</div>
+                    <div class="column-right"></div>
+                </div>
+            </td>
+    </tr>
+  
+</table>
+
+
+</body>
+</html>

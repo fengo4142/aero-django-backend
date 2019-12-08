@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="css/bootstrap.min.css">
+      
+      <style type="text/css">
+         table {
+         border-collapse: collapse;
+         border-spacing: 0;
+         max-width: 600px;
+         margin: auto;
+         top: 0;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         }
+         td{
+         padding:5px;
+         color:#242E42;font-family: 'Lato', sans-serif; font-size: 16px;
+         }
+        
+         h2{
+         color: #3A61A8; font-family:'Lato', sans-serif; line-height:31px;padding: 40px 0px 0px 0px;
+         }
+         @media screen and (min-width: 601px) {
+         h2{
+         font-size: 24px;
+           }
+         }
+         @media screen and (max-width: 600px) {
+         h2 {
+         font-size: 20px;
+           }
+         }
+         
+      </style>
+   </head>
+   <body>
+         <div class="jumbotron text-center">
+               <table>
+                   <tr>
+                     <td colspan="2"  style="background-image: url({{images.rectangle}}); width: 620px; height:150px;  text-align: center; left:0px; right:0px; top:0px; bottom:0px; margin:auto; clear: both; position:relative;">
+                          <img src={{images.logo}} style="max-width:100px; max-height:100px;  position:absolute; top:6px;">  
+                          <img src={{images.welcome}} style="max-width: 120px; max-height: 120px;position: relative; top: 79px; ">          
+                     </td>
+                  </tr>
+                  <tr>
+                     <td colspan="2" align="center">
+                        <h2>For Your Information The Work order created by you on {{maintenance.completed_on}} was completed successfully</h2>
+                        
+                     </td>
+                  </tr>
+                  
+            
+                  <tr>
+                     <td colspan="1" align="right">Category  &nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp; </td>
+                     <td colspan="1"> {{work_order.category}}</td>
+                  </tr>
+                  <tr>
+                     <td colsppan="1" align="right">Subcategory &nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp;  </td>
+                     <td colspan="1"> {{work_order.subcategory}}</td>
+                  </tr>
+                  
+                  <tr>
+                     <td colspan="1" align="right">Description   &nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp; </td>
+                     <td colspan="1"> {{work_order.problem_description}}</td>
+                  </tr>
+                  <tr>
+                     <td colspan="1" align="right">Completed by&nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp;  </td>
+                     <td colspan="1" style=" vertical-align: -moz-middle-with-baseline;">{{maintenance.completed_by.fullname}}</td>
+                  </tr>
+                  <tr> 
+                     <td colspan="1" align="right">Completed on  &nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp; </td>
+                     <td colspan="1" style=" vertical-align: -moz-middle-with-baseline;">{{maintenance.completed_on}}</td>
+                  </tr>
+                  <tr> 
+                        <td colspan="1" align="right">Implemented by  &nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td colspan="1" style=" vertical-align: -moz-middle-with-baseline;">{{operation.completed_by.fullname}}</td>
+                  </tr>
+                  <tr> 
+                        <td colspan="1" align="right">Implemented on &nbsp;&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;&nbsp; </td>
+                        <td colspan="1" style=" vertical-align: -moz-middle-with-baseline;">{{operation.completed_on}}</td>
+                  </tr>
+
+                  <tr>
+                     <td  height="20"></td>
+                  </tr>
+                  <tr>
+                        <td colspan="2" align="center" ><a href='http://localhost:3000/ops/workorders/{{work_order.id}}/detail'"   style=" height:33px; width:250px;background-color:#3A61A8;border-radius:20px 20px;padding: 10px;color:#FFFFFF; border:none; text-decoration: none; margin-top:100px">Inspect Workorder</a></td>
+                  </tr> 
+                  
+               </table>
+            </div>
+            
+   </body>
+   </html>

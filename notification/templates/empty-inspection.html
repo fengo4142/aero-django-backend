@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+  <head>
+    <title>List of persons</title>
+    <style type="text/css">
+      table,th,td {border: 1px solid black;border-collapse: collapse; width: 100%;}
+      .set {border: none; margin:0 auto;}
+      .set img{ max-width:100px !important;}
+      .setup {border-right: none;font-size: 15px;}
+      th {font-size: 9px;}
+      td {font-size: 9px;}
+      th,td {width: 150px;border: 1px solid black;padding: 5px}
+      .tech {margin-bottom: 10px;max-width: 2480px;}
+      .flow {width: 100%;border-left: none;border-right: none;}
+    </style>
+  </head>
+  <body>
+    <table class="tech">
+      
+        <tr>
+          <td colspan="3" class="setup">{{ airport.name }}</td>
+          <td colspan="1" class="set"> <img src="{{ airport.logo.url }}" /></td>
+        </tr>
+      
+    <tr>
+      <td>Date of Inspection</td>
+      <td></td>
+      <td>Inspected By:</td>
+      <td></td>
+    </tr>
+    <tr style="margin-top: 15px;">
+      <td>Weather Conditions:</td>
+      <td></td>
+      <td>Shift:</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="flow" colspan="4"></td>
+    </tr>
+    <tr>
+      <td>section</td>
+      <td colspan="3"></td>
+    </tr>
+
+
+    <tr>
+      <td colspan="4"></td>
+    </tr>
+    <tr>
+      <th>INSPECTION ITEM</th>
+      <th>STATUS</th>
+      <th>WORK ORDER</th>
+      <th>NOTAM</th>
+    </tr>
+    <tr>
+      <td style="background-color:grey;" colspan="4">FIXTURE OUTAGES</td>
+    </tr>
+    {% for field in fields %}
+      {% if field.type in "inspection"  %}
+        <tr>
+          <td colspan="4" style="background-color:grey;">{{field.title}}</td>
+        </tr>
+      {% endif %}
+      {% for checklist in field.checklist %}
+        <tr>
+          <td>{{checklist.value}}</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      {% endfor %}
+    {% endfor %}
+    </table>
+  </body>
+</html>
